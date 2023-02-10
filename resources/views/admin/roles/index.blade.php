@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('User Management') }}
+            {{ __('Role Management') }}
         </h2>
     </x-slot>
 
@@ -27,30 +27,18 @@
                                 <th scope="col" class="px-6 py-3">
                                     {{ __('Name') }}
                                 </th>
-                                <th scope="col" class="px-6 py-3">
-                                    {{ __('Email') }}
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    {{ __('Created at') }}
-                                </th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($users as $user)
+                            @foreach ($roles as $role)
                                 <tr class="bg-white border-b">
                                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                        {{ $user->name }}
+                                        {{ $role->name }}
                                     </th>
                                     <td class="px-6 py-4">
-                                        {{ $user->email }}
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        {{ $user->created_at }}
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <a href="{{ route('admin.users.edit', $permission->id) }}" class="no-underline hover:underline">{{ __('Edit') }}</a> |
-                                        <form action="{{ route('admin.users.destroy', $permission->id) }}" method="POST">
+                                        <a href="{{ route('admin.permissions.edit', $role->id) }}" class="no-underline hover:underline">{{ __('Edit') }}</a> |
+                                        <form action="{{ route('admin.permissions.destroy', $role->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
                                             <a href="#" class="no-underline hover:underline" onclick="return confirm('{{ __('Are you sure?') }}')">{{ __('Delete') }}</a>

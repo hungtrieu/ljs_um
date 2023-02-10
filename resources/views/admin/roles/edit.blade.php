@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Edit Permission') }}
+            {{ __('Edit Role') }}
         </h2>
     </x-slot>
 
@@ -18,7 +18,7 @@
                               <div class="col-span-3 sm:col-span-2">
                                 <label for="name" class="block text-sm font-medium text-gray-700">{{ __('Name') }}</label>
                                 <div class="mt-1 flex rounded-md shadow-sm">
-                                  <input type="text" name="name" id="name" value="{{ $permission->name }}" class="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                  <input type="text" name="name" id="name" value="{{ $role->name }}" class="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                 </div>
                               </div>
                             </div>
