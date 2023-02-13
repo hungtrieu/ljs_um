@@ -32,6 +32,22 @@
                                 </div>
                             </div>
 
+                            <div class="grid grid-cols-3 gap-6">
+                              <div class="col-span-3 sm:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700">{{ __('Permissions') }}</label>
+                                @foreach ($roles as $role)
+                                  <div class="form-check">
+                                    <input  type="checkbox" value="{{ $role->id }}" name="roles[]"
+                                      class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                                    />
+                                    <label class="form-check-label inline-block text-gray-800">
+                                      {{ $role->name }}
+                                    </label>
+                                  </div>
+                                @endforeach
+                              </div>
+                            </div>
+
                             <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
                                 <button type="submit" class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">{{ __('Save') }}</button>
                             </div>

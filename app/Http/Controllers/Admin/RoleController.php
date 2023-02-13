@@ -43,10 +43,7 @@ class RoleController extends Controller
     {
         $role = Role::create($request->validate());
 
-        $permissions = $request->permissions;
-        if(count($permissions)) {
-            $role->syncPermissions($permissions);
-        }
+        $role->syncPermissions($$request->permissions);
 
         return redirect()->route('admin.roles.index')->with('success', __('Role created successfully.'));
     }
@@ -59,7 +56,11 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        return view('admin.roles.edit', compact('role'));
+        $permissions = Permission::all();
+
+        $role_permissions = $role->permissions()->get()->pluck('id')->toArray();
+
+        return view('admin.roles.edit', compact('role', 'permissions', 'role_permissions'));
     }
 
     /**
@@ -73,17 +74,7 @@ class RoleController extends Controller
     {
         $role->update($request->validate());
 
-        $permissions = $request->permissions;
-
-        foreach($role->permissions()->get() as $role_permission) {
-            if(!in_array($role_permission, $permissions)) {
-                $role->revokePermissionTo($role_permission);
-            }
-        }
-
-        if(count($permissions)) {
-            $role->syncPermissions($permissions);
-        }
+        $role->syncPermissions($request->permissions);
 
         return redirect()->route('admin.roles.index')->with('success', __('Role updated successfully.'));
     }

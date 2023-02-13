@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -16,8 +17,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-        return view('admin.users.index', compact('users'));
+        $current_user = auth()->user();
+        if($current_user->hasPermissionTo('edit users')) {
+            $users = User::all();
+            return view('admin.users.index', compact('users'));
+        }
+        return redirect()->route('dashboard');
     }
 
     /**
@@ -27,7 +32,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('admin.users.create');
+        $roles = Role::all();
+
+        return view('admin.users.create', compact('roles'));
     }
 
     /**
@@ -38,7 +45,9 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        User::create($request->validate());
+        $user = User::create($request->validate());
+
+        $user->syncRoles($request->roles);
 
         return redirect()->route('admin.users.index')->with('success', __('User created successfully.'));
     }
@@ -51,7 +60,11 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('admin.users.edit', compact('user'));
+        $roles = Role::all();
+
+        $user_roles = $user->roles()->get()->pluck('id')->toArray();
+
+        return view('admin.users.edit', compact('user', 'roles', 'user_roles'));
     }
 
     /**
@@ -64,6 +77,8 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, User $user)
     {
         $user->update($request->validate());
+
+        $user->syncRoles($request->roles);
 
         return redirect()->route('admin.users.index')->with('success', __('User updated successfully.'));
     }
